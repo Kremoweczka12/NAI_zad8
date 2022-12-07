@@ -14,8 +14,7 @@ bool compareContourAreas ( std::vector<cv::Point> contour1, std::vector<cv::Poin
 int main( int argc, char** argv ) {
     bool capturing = true;
     cv::VideoCapture cap;
-    // Question for you
-//     C cap( "szukaj_zielonego.webm" );
+
     int deviceID = 0;             // 0 = open default camera
     int apiID = cv::CAP_ANY;      // 0 = autodetect default API
     // open selected camera using selected API
@@ -54,40 +53,41 @@ int main( int argc, char** argv ) {
             dilate(imgThresholded, eroded, kernel);
 //            erode(eroded, eroded, kernel);
 
-            cv::Mat canny_output;
-            Canny( eroded, canny_output, 10, 255 );
+//            cv::Mat canny_output;
+//            Canny( eroded, canny_output, 10, 255 );
 
             std::vector<std::vector<cv::Point> > contours;
             std::vector<cv::Vec4i> hierarchy;
-            findContours(canny_output, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0) );
+            findContours(eroded, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0) );
 
             std::sort(contours.begin(), contours.end(), compareContourAreas);
-            std::vector<cv::Point> BiggestContour = contours[contours.size() - 1];
-            std::vector<cv::Point> SecondBiggestContour = contours[contours.size() - 2];
-            auto m = moments(BiggestContour, false);
-            cv::Point p1 = {(int)(m.m10 / m.m00), (int)(m.m01 / m.m00)};
-            auto m2 = moments(SecondBiggestContour, false);
-            cv::Point p2 = {(int)(m2.m10 / m2.m00), (int)(m2.m01 / m2.m00)};
+            if (contours.size() >= 2) {
+                std::vector<cv::Point> BiggestContour = contours[contours.size() - 1];
+                std::vector<cv::Point> SecondBiggestContour = contours[contours.size() - 2];
+                auto m = moments(BiggestContour, false);
+                cv::Point p1 = {(int) (m.m10 / m.m00), (int) (m.m01 / m.m00)};
+                int x = (int) (m.m10 / m.m00);
+                int y = (int) (m.m01 / m.m00);
 
-            line(frame, p1, p2, cv::Scalar(255, 0, 0),
-                 10, cv::LINE_8);
-            cv::imshow("zakresy", canny_output);
+
+                auto m2 = moments(SecondBiggestContour, false);
+                int y2 = (int) (m2.m01 / m2.m00);
+                cv::Point p2 = {(int) (m2.m10 / m2.m00), (int) (m2.m01 / m2.m00)};
+
+
+                if (abs(y2 - y) < 40) {
+                    line(frame, p1, p2, cv::Scalar(255, 0, 0),
+                         10, cv::LINE_8);
+                }
+            }
+
+
+
+            cv::imshow("zakresy", eroded);
             cv::imshow("flipped",frame);
 
 
 
-//            gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-//            ret,gray = cv2.threshold(gray,127,255,0)
-//            gray2 = gray.copy()
-//
-//            contours, hier = cv2.findContours(gray,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-//            for cnt in contours:
-//            if 200<cv2.contourArea(cnt)<5000:
-//            (x,y,w,h) = cv2.boundingRect(cnt)
-//            cv2.rectangle(gray2,(x,y),(x+w,y+h),0,-1)
-
-//            findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
-//            cv::imshow( "Not-yet smart windown", frame );
         } else {
             // stream finished
             capturing = false;
