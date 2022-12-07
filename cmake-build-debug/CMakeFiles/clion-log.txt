@@ -1,0 +1,5 @@
+"C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2022.2.1/bin/ninja/win/ninja.exe" -G Ninja -S C:\Users\s23213\CLionProjects\MyFaceApp -B C:\Users\s23213\CLionProjects\MyFaceApp\cmake-build-debug
+-- Found OpenCV: D:/JAN/opencv-4.x/opencv-4.x/cmake-build-release-mingw (found version "4.6.0") 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/s23213/CLionProjects/MyFaceApp/cmake-build-debug

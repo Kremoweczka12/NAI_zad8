@@ -1,0 +1,3 @@
+C:/Users/s23213/CLionProjects/MyFaceApp/cmake-build-debug/CMakeFiles/ocvdemo.dir
+C:/Users/s23213/CLionProjects/MyFaceApp/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/s23213/CLionProjects/MyFaceApp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
